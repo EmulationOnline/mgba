@@ -91,14 +91,14 @@ const char* mLogCategoryName(int category) {
 	if (category < MAX_CATEGORY) {
 		return _categoryNames[category];
 	}
-	return NULL;
+	return "MISSING_CATEGORY_NAME";
 }
 
 const char* mLogCategoryId(int category) {
 	if (category >= 0 && category < MAX_CATEGORY) {
 		return _categoryIds[category];
 	}
-	return NULL;
+	return "MISSING_CATEGORY_ID";
 }
 
 int mLogCategoryById(const char* id) {
