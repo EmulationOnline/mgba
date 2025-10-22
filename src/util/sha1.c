@@ -189,11 +189,10 @@ void sha1Update(struct SHA1Context* context, const void* data, size_t len) {
 		memcpy(&context->buffer[j], data, (i = 64 - j));
 		sha1Transform(context->state, context->buffer);
 		for (; i + 63 < len; i += 64) {
-// // doesnt exist in clang
-// #pragma GCC diagnostic push
-// #pragma GCC diagnostic ignored "-Wstringop-overread"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-overread"
 			sha1Transform(context->state, ((uint8_t*) data) + i);
-// #pragma GCC diagnostic pop
+#pragma GCC diagnostic pop
 			// sha1Transform(context->state, &((uint8_t*) data)[i]); // orig
 		}
 		j = 0;
