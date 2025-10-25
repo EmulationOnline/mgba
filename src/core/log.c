@@ -115,15 +115,15 @@ void mLog(int category, enum mLogLevel level, const char* format, ...) {
 	struct mLogger* context = mLogGetContext();
 	va_list args;
 	va_start(args, format);
-	if (context) {
-		if (!context->filter || mLogFilterTest(context->filter, category, level)) {
-			context->log(context, category, level, format, args);
-		}
-	} else {
-		printf("%s: ", mLogCategoryName(category));
-		vprintf(format, args);
-		printf("\n");
-	}
+	// if (context) {
+	// 	if (!context->filter || mLogFilterTest(context->filter, category, level)) {
+	// 		context->log(context, category, level, format, args);
+	// 	}
+	// } else {
+	// 	printf("%s: ", mLogCategoryName(category));
+	// 	vprintf(format, args);
+	// 	printf("\n");
+	// }
 	va_end(args);
 }
 
@@ -231,37 +231,37 @@ int mLogFilterLevels(const struct mLogFilter* filter , int category) {
 	return value;
 }
 
-void _mCoreStandardLog(struct mLogger* logger, int category, enum mLogLevel level, const char* format, va_list args) {
-	struct mStandardLogger* stdlog = (struct mStandardLogger*) logger;
-
-	if (!mLogFilterTest(logger->filter, category, level)) {
-		return;
-	}
-
-	char buffer[MAX_LOG_BUF];
-
-	// Prepare the string
-	size_t length = snprintf(buffer, sizeof(buffer), "%s: ", mLogCategoryName(category));
-	if (length < sizeof(buffer)) {
-		length += vsnprintf(buffer + length, sizeof(buffer) - length, format, args);
-	}
-	if (length < sizeof(buffer)) {
-		length += snprintf(buffer + length, sizeof(buffer) - length, "\n");
-	}
-
-	// Make sure the length doesn't exceed the size of the buffer when actually writing
-	if (length > sizeof(buffer)) {
-		length = sizeof(buffer);
-	}
-
-	if (stdlog->logToStdout) {
-		printf("%s", buffer);
-	}
-
-	if (stdlog->logFile) {
-		stdlog->logFile->write(stdlog->logFile, buffer, length);
-	}
-}
+void _mCoreStandardLog(struct mLogger* logger, int category, enum mLogLevel level, const char* format, va_list args) {}
+// 	struct mStandardLogger* stdlog = (struct mStandardLogger*) logger;
+// 
+// 	if (!mLogFilterTest(logger->filter, category, level)) {
+// 		return;
+// 	}
+// 
+// 	char buffer[MAX_LOG_BUF];
+// 
+// 	// Prepare the string
+// 	size_t length = snprintf(buffer, sizeof(buffer), "%s: ", mLogCategoryName(category));
+// 	if (length < sizeof(buffer)) {
+// 		length += vsnprintf(buffer + length, sizeof(buffer) - length, format, args);
+// 	}
+// 	if (length < sizeof(buffer)) {
+// 		length += snprintf(buffer + length, sizeof(buffer) - length, "\n");
+// 	}
+// 
+// 	// Make sure the length doesn't exceed the size of the buffer when actually writing
+// 	if (length > sizeof(buffer)) {
+// 		length = sizeof(buffer);
+// 	}
+// 
+// 	if (stdlog->logToStdout) {
+// 		printf("%s", buffer);
+// 	}
+// 
+// 	if (stdlog->logFile) {
+// 		stdlog->logFile->write(stdlog->logFile, buffer, length);
+// 	}
+// }
 
 void mStandardLoggerInit(struct mStandardLogger* logger) {
 	logger->d.log = _mCoreStandardLog;
