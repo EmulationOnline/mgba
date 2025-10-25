@@ -46,11 +46,11 @@ float strtof_l(const char* restrict str, char** restrict end, locale_t locale) {
 #endif
 
 int ftostr_u(char* restrict str, size_t size, float f) {
+#if defined(ANDROID)
 	locale_t l = newlocale(LC_NUMERIC_MASK, "C", 0);
-// #ifdef HAVE_LOCALE
-// #else
-// 	locale_t l = "C";
-// #endif
+#else
+ 	locale_t l = "C";
+#endif
 	int res = ftostr_l(str, size, f, l);
 #ifdef HAVE_LOCALE
 	freelocale(l);
@@ -59,11 +59,11 @@ int ftostr_u(char* restrict str, size_t size, float f) {
 }
 
 float strtof_u(const char* restrict str, char** restrict end) {
+#if defined(ANDROID)
 	locale_t l = newlocale(LC_NUMERIC_MASK, "C", 0);
-// #ifdef HAVE_LOCALE
-// #else
-// 	locale_t l = "C";
-// #endif
+#else
+	locale_t l = "C";
+#endif
 	float res = strtof_l(str, end, l);
 #ifdef HAVE_LOCALE
 	freelocale(l);
