@@ -14,7 +14,7 @@ CXX_GUARD_START
 
 #ifdef HAVE_XLOCALE
 #include <xlocale.h>
-#elif !defined(ANDROID)
+#elif !defined(ANDROID) &&  !defined(ISWASM)
 typedef const char* locale_t;
 #endif
 // #elif !defined(HAVE_LOCALE)
