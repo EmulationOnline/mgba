@@ -15,12 +15,18 @@ CXX_GUARD_START
 char* strndup(const char* start, size_t len);
 #endif
 
+
 #ifndef HAVE_STRDUP
 char* strdup(const char* str);
 #endif
 
 #ifndef HAVE_STRLCPY
+#ifdef __clang__
+#include <string.h>
+#define HAVE_STRLCPY
+#else
 size_t strlcpy(char* restrict dst, const char* restrict src, size_t dstsize);
+#endif  // clang
 #endif
 
 char* strnrstr(const char* restrict s1, const char* restrict s2, size_t len);
